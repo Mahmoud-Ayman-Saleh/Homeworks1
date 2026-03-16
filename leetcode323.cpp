@@ -4,23 +4,18 @@
 #include<unordered_set>
 using namespace std;
 
-typedef vector<vector<int>> GRAPH;
+typedef unordered_map<int, vector<int>> GRAPH;
 
 class Solution
 {
 private:
 
-void add(GRAPH &graph, int from, int to)
-{
-    graph[from].push_back(to);
-    graph[to].push_back(from);
-}
 
-void build_graph(GRAPH &graph, vector<vector<int>> &edges)
+void build(vector<vector<int>> &edges, GRAPH &graph)
 {
     for (int i = 0; i < edges.size(); i++)
     {
-        add(graph, edges[i][0], edges[i][1]);
+        graph[edges[i][0]].push_back(edges[i][1]);
     }
 }
 
@@ -34,15 +29,13 @@ void dfs(GRAPH &graph, vector<bool> &visited, int node)
             dfs(graph, visited, i);
         }
     }
-
 }
-
 
 public:
     int countComponents(int nodes, vector<vector<int>> &edges)
     {
         GRAPH graph(nodes);
-        build_graph(graph, edges);
+        build(edges, graph);
         vector<bool> visited(nodes);
         int count = 0;
         for (int i = 0; i < nodes; i++)
@@ -53,7 +46,6 @@ public:
                 dfs(graph, visited, i);
             }
         }
-
         return count;
     }    
 };

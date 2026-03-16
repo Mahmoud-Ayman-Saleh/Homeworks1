@@ -21,19 +21,19 @@ public:
 class Solution
 {
 private:
-unordered_map<int, Employee*> id_to_emp;
+unordered_map <int, Employee*> id_to_emp;
 
-    int dfs(int id)
+
+int dfs(int id)
+{
+    Employee *emp = id_to_emp[id];
+    int ans = emp->importance;
+    for (auto &i : emp->subordinates)
     {
-        Employee *emp = id_to_emp[id];
-        int ans = emp->importance;
-        for (auto &i : emp->subordinates)
-        {
-            ans += dfs(i);
-        }
-        return ans;
+        ans += dfs(i);
     }
-
+    return ans;
+}
 public:
     int getImportance(vector<Employee*> employees, int id)
     {
@@ -41,7 +41,6 @@ public:
         {
             id_to_emp[emp->id] = emp;
         }
-
         return dfs(id);
     }
 };

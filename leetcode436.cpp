@@ -25,19 +25,15 @@ public:
 
         for (int i = 0; i < n; i++)
         {
-            int val = intervals[i][1];
+            vector<int> val { intervals[i][1], 0 };
             auto it = lower_bound(startings.begin(), startings.end(), val);
-
             if (it != startings.end())
             {
                 int idx = it - startings.begin();
                 ans[i] = startings[idx][1];
             }
         }
-
         return ans;
-
-        
     }
 };
 

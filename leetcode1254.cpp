@@ -11,7 +11,7 @@ class Solution
 private:
     int dr[4] { -1, 0, 1, 0 };
 	int dc[4] { 0, 1, 0, -1 };
-	bool is_touched_boundry;
+	bool is_closed_island;
 
 
     bool is_valid(int r, int c, vector<vector<int>> &matrix)
@@ -21,19 +21,27 @@ private:
         return true;
     }
 
-    bool is_grid_boundry(int r, int c, vector<vector<int>>& grid)
+    bool is_zero_boundry(int r, int c, vector<vector<int>> &grid, vector<vector<bool>> &visited)
     {
-        if (r == 0 || r == grid.size() - 1) return true;
-        if (c == 0 || c == grid[0].size() - 1) return true;
+        if (!visited[r][c] && grid[r][c] == 0 && (r == 0 || r == grid.size() -1 || c == 0 || c == grid[0].size() -1))
+        {
+            return true;
+        }
         return false;
+    }
+
+    bool is_water(int r, int c, vector<vector<int>> &grid)
+    {
+        return grid[r][c] == 1;
     }
 
     void dfs(int r, int c, vector<vector<int>>& grid, vector<vector<bool>> &visited)
     {
-        if (!is_valid(r, c, grid) || grid[r][c] == 1 || visited[r][c]) return;
-        if (is_grid_boundry(r, c, grid))
+        if (!is_valid(r, c, grid) || is_water(r,c, grid) || visited[r][c]) return;
+
+        if (is_zero_boundry(r, c, grid, visited))
         {
-            is_touched_boundry = true;
+            is_closed_island = false;
         }
 
         visited[r][c] = true;
@@ -46,26 +54,23 @@ private:
 public:
     int closedIsland(vector<vector<int>>& grid)
     {
-        vector<vector<bool>> visited(grid.size(), vector<bool> (grid[0].size()));
-        int rows = grid.size(), cols = grid[0].size();
+        vector<vector<bool>> visited(grid.size(), vector<bool> (grid[0].size(), false));
         int ans = 0;
-
-        for (int i = 0; i < rows; i++)
+        
+        for (int i = 0; i < grid.size(); i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < grid[0].size(); j++)
             {
                 if (grid[i][j] == 0 && !visited[i][j])
                 {
-                    is_touched_boundry = false;
+                    is_closed_island = true;
                     dfs(i, j, grid, visited);
-                    if (!is_touched_boundry)
-                    {
-                        ans++;
-                    }
+                    if (is_closed_island) ans++;
                 }
+
+                
             }
         }
-
         return ans;
     }
 };

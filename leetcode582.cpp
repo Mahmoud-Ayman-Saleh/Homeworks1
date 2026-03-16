@@ -10,38 +10,38 @@ class Solution
 {
 private:
 
-void add(GRAPH &graph, int from, int to)
-{
-    graph[from].push_back(to);
-}
-
-void build_graph(GRAPH &graph, vector<int> &pid, vector<int> &ppid)
-{
-    for (int i = 0; i < pid.size(); i++)
+    void add(GRAPH &graph, int from, int to)
     {
-        add(graph, ppid[i], pid[i]);
+        graph[from].push_back(to);
     }
-}
 
-void dfs(GRAPH &graph, unordered_set<int> &visited, int node)
-{
-    visited.insert(node);
-
-    for (int i : graph[node])
+    void build_graph(GRAPH &graph, vector<int> &pid, vector<int> &ppid)
     {
-        if (!visited.count(i))
+        for (int i = 0; i < pid.size(); i++)
         {
-            dfs(graph, visited, i);
+            add(graph, ppid[i], pid[i]);
         }
     }
-}
 
-vector<int> reachability(GRAPH &graph, int kill)
-{
-    unordered_set<int> visited;
-    dfs(graph, visited, kill);
-    return vector<int>(visited.begin(), visited.end());    
-}
+    void dfs(GRAPH &graph, unordered_set<int> &visited, int node)
+    {
+        visited.insert(node);
+
+        for (int i : graph[node])
+        {
+            if (!visited.count(i))
+            {
+                dfs(graph, visited, i);
+            }
+        }
+    }
+
+    vector<int> reachability(GRAPH &graph, int kill)
+    {
+        unordered_set<int> visited;
+        dfs(graph, visited, kill);
+        return vector<int>(visited.begin(), visited.end());    
+    }
 
 
 

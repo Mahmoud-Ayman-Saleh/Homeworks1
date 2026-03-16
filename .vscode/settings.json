@@ -5,6 +5,7 @@
         "algorithm": "cpp",
         "random": "cpp",
         "unordered_set": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "initializer_list": "cpp"
     }
 }
